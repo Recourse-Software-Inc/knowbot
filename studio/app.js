@@ -726,7 +726,7 @@ function helpIntent(text, label) {
   if (!hasFiles) chips.push({ id: 'use_samples', label: 'Use sample files', kind: 'primary', action: { type: 'attach_samples' }, local: true });
   else if (ready && !m.proofRun) chips.push({ id: 'run_proof', label: 'Run the Proof Run', kind: 'primary', action: { type: 'run_proof' }, local: true });
   else chips.push({ id: 'add_more', label: 'Add more files', action: { type: 'request_upload' }, local: true });
-  if (!hasFiles) chips.push({ id: 'import_store', label: 'Enter your website', action: { type: 'import_store' }, local: true });
+  if (!hasFiles) chips.push({ id: 'import_store', label: 'Add website', action: { type: 'import_store' }, local: true });
   if (!hasFiles) chips.push({ id: 'proof_info', label: 'What is the Proof Run?', send: 'What is the Proof Run?' });
   else if (ready && m.proofRun) chips.push({ id: 'launch', label: `Launch · ${priceText()}`, kind: 'primary', action: { type: 'show_launch' }, local: true });
   chips.push(channelsChip());
@@ -1612,7 +1612,7 @@ function defaultChips() {
   if (step === 'purpose' || step === 'sources') return [
     { id: 'use_samples', label: 'Use sample files', kind: 'primary', action: { type: 'attach_samples' }, local: true },
     { id: 'upload_files', label: 'Upload my files', action: { type: 'request_upload' }, local: true },
-    { id: 'import_store', label: 'Enter your website', action: { type: 'import_store' }, local: true },
+    { id: 'import_store', label: 'Add website', action: { type: 'import_store' }, local: true },
   ];
   if (step === 'learn') return [
     { id: 'what_atom', label: "What's an atom?", send: "What's an atom?" },
@@ -4240,7 +4240,7 @@ async function createTrialWithRetry() {
         localSay('Good news: your own bot can start now. Use the sample files for the 30-second demo, or add yours.', { chips: [
           { id: 'use_samples', label: 'Use sample files · 30s demo', kind: 'primary', action: { type: 'attach_samples' }, local: true },
           { id: 'upload_files', label: 'Upload my files', action: { type: 'request_upload' }, local: true },
-          { id: 'import_store', label: 'Enter your website', action: { type: 'import_store' }, local: true },
+          { id: 'import_store', label: 'Add website', action: { type: 'import_store' }, local: true },
         ] });
       }
       return r;
@@ -4435,7 +4435,7 @@ function renderB0() {
   setChips(rec, [
     { id: 'use_samples', label: 'Use sample files · 30s demo', kind: 'primary', action: { type: 'attach_samples', set: 'lumen-bikes' }, local: true },
     { id: 'upload_files', label: 'Upload my files', action: { type: 'request_upload' }, local: true },
-    { id: 'import_store', label: 'Enter your website', action: { type: 'import_store' }, local: true },
+    { id: 'import_store', label: 'Add website', action: { type: 'import_store' }, local: true },
     { id: 'what_canonical', label: "How does it avoid making things up?", local: true, run: explainCanonical },
   ], { still: hydrating });
   // r6 (D1): a 3-step "what happens next" preview under the first turn (desktop; identical to index.html's static
@@ -4545,7 +4545,7 @@ function explainCanonical() {
   localSay(`It only answers from the files you give it. It quotes them word for word with [n] citations, and if the answer isn't there it says exactly: *"${NOT_IN_DATA}"* No guessing, ever.`, { reply: true, chips: [
     { id: 'use_samples', label: 'Show me with sample files', kind: 'primary', action: { type: 'attach_samples', set: 'lumen-bikes' }, local: true },
     { id: 'upload_files', label: 'Upload my files', action: { type: 'request_upload' }, local: true },
-    { id: 'import_store', label: 'Enter your website', action: { type: 'import_store' }, local: true },
+    { id: 'import_store', label: 'Add website', action: { type: 'import_store' }, local: true },
   ] });
 }
 

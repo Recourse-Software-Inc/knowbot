@@ -946,7 +946,7 @@ describe('KnowBot Studio server (trials.mjs)', () => {
     const t0 = await c.trial();
     const none = await c.stream(t0, '/setup', { message: 'only answer about warranties and returns' });
     assert.match(none.filter((e) => e.event === 'delta').map((e) => e.data.text).join(''), /Add files first/);
-    assert.deepEqual(none.find((e) => e.event === 'chips').data.chips.map((x) => x.label), ['Upload files', 'Use sample files', 'Enter a Store URL', 'Open bot spec']);
+    assert.deepEqual(none.find((e) => e.event === 'chips').data.chips.map((x) => x.label), ['Upload files', 'Use sample files', 'Add website', 'Open bot spec']);
     // a scope over the sample files keeps only the warranty file on, with a ConfigDiff card
     const t = await c.trial();
     assert.equal((await c.json(t, '/samples', 'POST', { set: 'lumen-bikes' })).status, 201);
@@ -1015,7 +1015,7 @@ describe('KnowBot Studio server (trials.mjs)', () => {
     // no files: a spec edit never offers the Proof Run
     const t3 = await c.trial();
     const se = await c.stream(t3, '/setup', { event: { type: 'spec_edit', data: {} } });
-    assert.deepEqual(se.find((e) => e.event === 'chips').data.chips.map((x) => x.label), ['Upload files', 'Use sample files', 'Enter a Store URL', 'Open bot spec']);
+    assert.deepEqual(se.find((e) => e.event === 'chips').data.chips.map((x) => x.label), ['Upload files', 'Use sample files', 'Add website', 'Open bot spec']);
   });
 
   test('r4: fake knowDrive spreads weak candidates and runs two files at once', async () => {

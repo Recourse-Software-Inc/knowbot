@@ -499,7 +499,7 @@ export function parseIntent(message, ctx = {}) {
   if (/\b(guess|internet|web search|make (?:it|stuff|things) up|less strict|loosen|looser|lower the floor)\b/i.test(msg)) intents.push('explain_canonical');
   // "Enter a Store URL" typed: "import my shopify store mystore.com", "pull in our products from acme.com/shop"
   const storeAsk = storeIntentOf(msg);
-  if (storeAsk) { actions.push({ type: 'import_store', ...(storeAsk.url ? { url: storeAsk.url } : {}) }); intents.push('import_store'); }
+  if (storeAsk) { actions.push({ type: 'import_store', ...(storeAsk.url ? { url: storeAsk.url } : {}) }); intents.push('import_store'); if (storeAsk.offer) intents.push('store_offer'); }
   if (/\bremove (?:the )?samples?\b|\bremove (?:the )?sample files\b/i.test(msg)) { actions.push({ type: 'remove_samples' }); intents.push('remove_samples'); }
   else if (!storeAsk && /\b(?:samples?|demo|example files?)\b/i.test(msg)) { actions.push({ type: 'attach_samples' }); intents.push('attach_samples'); }
   if (/\b(?:just\s+)?(?:let me\s+)?upload\b|\bskip\b/i.test(msg) && !intents.includes('attach_samples') && !storeAsk) { actions.push({ type: 'request_upload' }); intents.push('request_upload'); }
@@ -561,7 +561,23 @@ export function storeIntentOf(msg) {
   if (/\b(?:enter|paste|add|use)\s+(?:a|my|our|the)?\s*(?:store|shop|site|website)\s+(?:url|address|link)\b|\bstore\s+url\b/i.test(s)) return { url };
   if (verb && word && (/\b(?:import|pull|scrape|crawl|connect|sync|bring)\b/i.test(s) || url)) return { url };
   if (url && word && /\b(?:my|our)\b/i.test(s)) return { url };
+  // owner: any website the visitor mentions ("a support bot for acme.com", "The Ultimate Game Master.com") is offered
+  // for import. The import card only opens prefilled: the visitor still confirms ownership and presses Import.
+  if (url) {
+    // "The Ultimate Game Master.com": DOMAIN_RE only sees "Master.com"; the Title-Case run before it is the real name
+    const spaced = spacedDomainOf(s);
+    return { url: spaced && spaced.endsWith(url.toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '')) && spaced.length > url.length ? spaced : url, offer: true };
+  }
+  const spaced = spacedDomainOf(s);
+  if (spaced) return { url: spaced, offer: true };
   return null;
+}
+/** "The Ultimate Game Master.com" -> theultimategamemaster.com (Title-Case words run together before a TLD). */
+export function spacedDomainOf(msg) {
+  const m = /((?:[A-Z][\w'’&-]*\s+){0,5}[A-Za-z0-9][\w'’&-]*)\.(com|net|org|io|co|ca|shop|store|ai|app|us|uk|au)\b/.exec(String(msg || '').replace(/\S+@\S+/g, ' '));
+  if (!m) return null;
+  const host = m[1].toLowerCase().replace(/['’]/g, '').replace(/&/g, 'and').replace(/[^a-z0-9-]+/g, '');
+  return host.length >= 2 && host.length <= 63 ? `${host}.${m[2]}` : null;
 }
 const BUSINESS_NOUN_RE = /\b(?:shop|store|business|company|startup|caf[eé]|coffee shop|restaurant|bar|pub|bakery|clinic|practice|surgery|studio|salon|spa|gym|agency|firm|hotel|hostel|b&b|school|academy|nursery|garage|workshop|brand|boutique|bookshop|pharmacy|dealership|brewery|winery|farm|charity|nonprofit|non-profit|club|team|venue|library|museum|co-?op|marketplace|platform|app|saas)$/i;
 function specificWords(msg) {
@@ -2296,8 +2312,8 @@ export function createStudio(o = {}) {
     const step = stepOf(T, files);
     const ready = files.filter((f) => f.stage === 'ready');
     // fixer r4: with no files nothing can be tested yet: files first, the spec second, never a Proof Run
-    if (!files.length) return [C('upload', 'Upload files', { kind: 'primary', action: { type: 'request_upload' } }), C('samples', 'Use sample files', { action: { type: 'attach_samples' } }), C('store', 'Enter a Store URL', { action: { type: 'import_store' } }), C('open-spec', 'Open bot spec', { action: { type: 'open_spec' } })];
-    if (step === 'purpose' || step === 'sources') return [C('samples', 'Use sample files', { kind: 'primary', action: { type: 'attach_samples' } }), C('upload', 'Upload my files', { action: { type: 'request_upload' } }), C('store', 'Enter a Store URL', { action: { type: 'import_store' } }), C('what-canonical', "What's a canonical bot?", { send: "What's a canonical bot?" })];
+    if (!files.length) return [C('upload', 'Upload files', { kind: 'primary', action: { type: 'request_upload' } }), C('samples', 'Use sample files', { action: { type: 'attach_samples' } }), C('store', 'Add website', { action: { type: 'import_store' } }), C('open-spec', 'Open bot spec', { action: { type: 'open_spec' } })];
+    if (step === 'purpose' || step === 'sources') return [C('samples', 'Use sample files', { kind: 'primary', action: { type: 'attach_samples' } }), C('upload', 'Upload my files', { action: { type: 'request_upload' } }), C('store', 'Add website', { action: { type: 'import_store' } }), C('what-canonical', "What's a canonical bot?", { send: "What's a canonical bot?" })];
     if (step === 'learn' && !ready.length) return [C('formal', 'Make it more formal', { send: 'Make it more formal' }), C('add-files', 'Add more files', { action: { type: 'request_upload' } }), C('what-atom', "What's an atom?", { send: "What's an atom?" })];
     if (step === 'launch') return [C('launch', `Launch · $${PRICE}/mo`, { kind: 'primary', action: { type: 'show_launch' } }), C('keep-testing', 'Keep testing', { send: 'Keep testing' }), C('what-get', 'What do I get?', { send: 'What do I get?' })];
     if (!ready.length) return [C('formal', 'Make it more formal', { send: 'Make it more formal' }), C('add-files', 'Add more files', { action: { type: 'request_upload' } }), C('what-atom', "What's an atom?", { send: "What's an atom?" })];
@@ -2444,10 +2460,15 @@ export function createStudio(o = {}) {
       chips: [C('upload', 'Upload my files', { kind: 'primary', action: { type: 'request_upload' } }), C('samples', 'Use sample files', { action: { type: 'attach_samples' } })] };
     if (has('explain_plan')) return { reply: `KnowDrive is $${PRICE}/month: your KnowBot hosted with a share link, an embed widget for any site, 100 MB of storage, citations on every answer and canonical refusals, and question insights so you can see what people ask. Your files carry over. Cancel anytime.`,
       chips: [C('launch', `Launch · $${PRICE}/mo`, { kind: 'primary', action: { type: 'show_launch' } }), C('keep-testing', 'Keep testing', { send: 'Keep testing' })] };
-    if (has('remove_samples')) return { reply: withNotes('Removing the sample files. Your settings stay as they are.'), actions: [{ type: 'remove_samples' }], patch, chips: [C('upload', 'Upload my files', { kind: 'primary', action: { type: 'request_upload' } }), C('what-types', 'What file types work?', { send: 'What file types work?' })] };
+    if (has('remove_samples')) return { reply: withNotes('Removing the sample files. Your settings stay as they are.'), actions: [{ type: 'remove_samples' }], patch, chips: [C('upload', 'Upload my files', { kind: 'primary', action: { type: 'request_upload' } }), C('store', 'Add website', { action: { type: 'import_store' } }), C('what-types', 'What file types work?', { send: 'What file types work?' })] };
     if (has('import_store')) {
       const a = acts.find((x) => x.type === 'import_store') || { type: 'import_store' };
+      const storeOffer = has('store_offer');
       const where = a.url ? ` ${clip(String(a.url).replace(/^https?:\/\//i, '').replace(/\/$/, ''), 60)}` : ' your store';
+      if (storeOffer) {
+        return { reply: withNotes(`${diff.length ? `${confirmChanges(diff)} ` : ''}Want me to read${where} so ${name} can answer from it? I'll import its products, help pages and policies in about a minute. Check the address and tick that you own or manage it.`),
+          actions: [a], patch, chips: [C('upload', 'Upload files instead', { action: { type: 'request_upload' } }), C('samples', 'Use sample files', { action: { type: 'attach_samples' } })] };
+      }
       return { reply: withNotes(`${diff.length ? `${confirmChanges(diff)} ` : ''}Let's import${where}. Check the address, tick that you own or manage it, and I'll read its products, help pages and policies, about a minute.`),
         actions: [a], patch, chips: [C('upload', 'Upload files instead', { action: { type: 'request_upload' } }), C('samples', 'Use sample files', { action: { type: 'attach_samples' } })] };
     }
@@ -2507,7 +2528,7 @@ export function createStudio(o = {}) {
         const forWhom = p.business ? `your ${p.business}` : org ? org.to : null;
         const desc = `${/^[aeiou]/i.test(tone || '') ? 'an' : 'a'} ${tone ? `${tone} ` : ''}${kind ? `${kind[1].toLowerCase()} ${kind[2].toLowerCase()}` : 'bot'}${forWhom ? ` for ${forWhom}` : ''}`;
         return { reply: withNotes(`Done, meet **${nm}**: ${desc}. Now give it something to know: drop files on the right, or use my samples.`), patch,
-          chips: [C('upload', 'Upload files', { kind: 'primary', action: { type: 'request_upload' } }), C('samples', 'Use sample files', { action: { type: 'attach_samples' } }), C('what-types', 'What file types work?', { send: 'What file types work?' })] };
+          chips: [C('upload', 'Upload files', { kind: 'primary', action: { type: 'request_upload' } }), C('store', 'Add website', { action: { type: 'import_store' } }), C('samples', 'Use sample files', { action: { type: 'attach_samples' } }), C('what-types', 'What file types work?', { send: 'What file types work?' })] };
       }
       const alreadySet = Object.keys(patch).filter((k) => k !== 'greeting' && !diff.some((d) => d.field === k)).map((k) => alreadyNote(k, T.spec[k])).filter(Boolean);
       const words = diff.map((d) => describeChange(d)).filter(Boolean);

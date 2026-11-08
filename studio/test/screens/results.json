@@ -1,5 +1,5 @@
 {
-  "at": "2026-11-08T19:35:59.077Z",
+  "at": "2026-11-08T20:14:00.011Z",
   "speed": 4,
   "results": [
     {
@@ -8,7 +8,7 @@
       "name": "B0 text visible",
       "ok": true,
       "soft": false,
-      "detail": "163 ms to first Builder message"
+      "detail": "241 ms to first Builder message"
     },
     {
       "cell": "desktop-light-full",
@@ -16,7 +16,7 @@
       "name": "first-run choices: samples (primary), upload, store URL",
       "ok": true,
       "soft": false,
-      "detail": "Use sample files · 30s demo | Upload my files | Enter your website | How does it avoid making things up?"
+      "detail": "Use sample files · 30s demo | Upload my files | Add website | How does it avoid making things up?"
     },
     {
       "cell": "desktop-light-full",
@@ -64,7 +64,7 @@
       "name": "BotChip becomes Lumen Help within 3 s",
       "ok": true,
       "soft": false,
-      "detail": "136 ms"
+      "detail": "131 ms"
     },
     {
       "cell": "desktop-light-full",
@@ -472,7 +472,7 @@
       "name": "redirect URL has trial= and bot=Lumen+Help",
       "ok": true,
       "soft": false,
-      "detail": "https://knowdrive.ai/signup?plan=knowbot&trial=tr_5qytfkzceqaxyldt&bot=Lumen+Help&email=smoke%40example.com&price=249&return=http%3A%2F%2F127.0.0.1%3A41169%2Fstudio%2F%3Ft%3Dtr_5qytfkzceqaxyldt%26launched%3D1%26k%3DeyJ0IjoidHJfNXF5dGZremNlcWF4eWxkdCIsImUiOjE3OTQ3NzExNjM3Mjh9.IPpHOSLaGAkD_p3p2uHER2Mx%23launched"
+      "detail": "https://knowdrive.ai/signup?plan=knowbot&trial=tr_hqllxd7xrir5czci&bot=Lumen+Help&email=smoke%40example.com&price=249&return=http%3A%2F%2F127.0.0.1%3A37159%2Fstudio%2F%3Ft%3Dtr_hqllxd7xrir5czci%26launched%3D1%26k%3DeyJ0IjoidHJfaHFsbHhkN3hyaXI1Y3pjaSIsImUiOjE3OTQ3NzM0NDM5ODl9.m1X1ySQBAvHIeBqG9yxQkHl3%23launched"
     },
     {
       "cell": "desktop-light-full",
@@ -640,7 +640,7 @@
       "name": "librarian answer links the store page it quotes",
       "ok": true,
       "soft": false,
-      "detail": "I think I found what you're looking for! In [“Refund policy”](http://127.0.0.1:45729/policies/refund-policy), it says: “Unridden bikes can be returned within 30 days of delivery for a full refund” [1]. Feel free to open the link for the full details."
+      "detail": "I think I found what you're looking for! In [“Refund policy”](http://127.0.0.1:41989/policies/refund-policy), it says: “Unridden bikes can be returned within 30 days of delivery for a full refund” [1]. Feel free to open the link for the full details."
     },
     {
       "cell": "desktop-light-full",
@@ -672,7 +672,7 @@
       "name": "B0 text visible",
       "ok": true,
       "soft": false,
-      "detail": "209 ms to first Builder message"
+      "detail": "132 ms to first Builder message"
     },
     {
       "cell": "desktop-dark-full",
@@ -680,7 +680,7 @@
       "name": "first-run choices: samples (primary), upload, store URL",
       "ok": true,
       "soft": false,
-      "detail": "Use sample files · 30s demo | Upload my files | Enter your website | How does it avoid making things up?"
+      "detail": "Use sample files · 30s demo | Upload my files | Add website | How does it avoid making things up?"
     },
     {
       "cell": "desktop-dark-full",
@@ -728,7 +728,7 @@
       "name": "BotChip becomes Lumen Help within 3 s",
       "ok": true,
       "soft": false,
-      "detail": "159 ms"
+      "detail": "123 ms"
     },
     {
       "cell": "desktop-dark-full",
@@ -832,7 +832,7 @@
       "name": "first cited answer < 45 s from landing",
       "ok": true,
       "soft": false,
-      "detail": "6.3 s"
+      "detail": "6.2 s"
     },
     {
       "cell": "desktop-dark-full",
@@ -1136,7 +1136,7 @@
       "name": "redirect URL has trial= and bot=Lumen+Help",
       "ok": true,
       "soft": false,
-      "detail": "https://knowdrive.ai/signup?plan=knowbot&trial=tr_exlajpkl46viwv56&bot=Lumen+Help&email=smoke%40example.com&price=249&return=http%3A%2F%2F127.0.0.1%3A43239%2Fstudio%2F%3Ft%3Dtr_exlajpkl46viwv56%26launched%3D1%26k%3DeyJ0IjoidHJfZXhsYWpwa2w0NnZpd3Y1NiIsImUiOjE3OTQ3NzEyMDI0ODZ9.6T529I_uTnGmqwJ0_v1ShKfT%23launched"
+      "detail": "https://knowdrive.ai/signup?plan=knowbot&trial=tr_4f6ahxje2bnhrgqu&bot=Lumen+Help&email=smoke%40example.com&price=249&return=http%3A%2F%2F127.0.0.1%3A41371%2Fstudio%2F%3Ft%3Dtr_4f6ahxje2bnhrgqu%26launched%3D1%26k%3DeyJ0IjoidHJfNGY2YWh4amUyYm5ocmdxdSIsImUiOjE3OTQ3NzM0ODI0MTV9.SpeKkC7MRTUv2k8voWdoH40T%23launched"
     },
     {
       "cell": "desktop-dark-full",
@@ -1312,7 +1312,7 @@
       "name": "librarian answer links the store page it quotes",
       "ok": true,
       "soft": false,
-      "detail": "I think I found what you're looking for! In [“Refund policy”](http://127.0.0.1:36563/policies/refund-policy), it says: “Unridden bikes can be returned within 30 days of delivery for a full refund” [1]. Feel free to open the link for the full details."
+      "detail": "I think I found what you're looking for! In [“Refund policy”](http://127.0.0.1:33147/policies/refund-policy), it says: “Unridden bikes can be returned within 30 days of delivery for a full refund” [1]. Feel free to open the link for the full details."
     },
     {
       "cell": "desktop-dark-full",
@@ -1344,7 +1344,7 @@
       "name": "B0 text visible",
       "ok": true,
       "soft": false,
-      "detail": "185 ms to first Builder message"
+      "detail": "152 ms to first Builder message"
     },
     {
       "cell": "desktop-light-reduce",
@@ -1352,7 +1352,7 @@
       "name": "first-run choices: samples (primary), upload, store URL",
       "ok": true,
       "soft": false,
-      "detail": "Use sample files · 30s demo | Upload my files | Enter your website | How does it avoid making things up?"
+      "detail": "Use sample files · 30s demo | Upload my files | Add website | How does it avoid making things up?"
     },
     {
       "cell": "desktop-light-reduce",
@@ -1400,7 +1400,7 @@
       "name": "BotChip becomes Lumen Help within 3 s",
       "ok": true,
       "soft": false,
-      "detail": "133 ms"
+      "detail": "97 ms"
     },
     {
       "cell": "desktop-light-reduce",
@@ -1504,7 +1504,7 @@
       "name": "first cited answer < 45 s from landing",
       "ok": true,
       "soft": false,
-      "detail": "5.5 s"
+      "detail": "5.7 s"
     },
     {
       "cell": "desktop-light-reduce",
@@ -1808,7 +1808,7 @@
       "name": "redirect URL has trial= and bot=Lumen+Help",
       "ok": true,
       "soft": false,
-      "detail": "https://knowdrive.ai/signup?plan=knowbot&trial=tr_uakaj7hmfdc27vrg&bot=Lumen+Help&email=smoke%40example.com&price=249&return=http%3A%2F%2F127.0.0.1%3A35603%2Fstudio%2F%3Ft%3Dtr_uakaj7hmfdc27vrg%26launched%3D1%26k%3DeyJ0IjoidHJfdWFrYWo3aG1mZGMyN3ZyZyIsImUiOjE3OTQ3NzEyNDExOTZ9.EzTBLxCAgTp9z1O5sm7CCkxj%23launched"
+      "detail": "https://knowdrive.ai/signup?plan=knowbot&trial=tr_uktmbxlenshdcsed&bot=Lumen+Help&email=smoke%40example.com&price=249&return=http%3A%2F%2F127.0.0.1%3A41847%2Fstudio%2F%3Ft%3Dtr_uktmbxlenshdcsed%26launched%3D1%26k%3DeyJ0IjoidHJfdWt0bWJ4bGVuc2hkY3NlZCIsImUiOjE3OTQ3NzM1MjEwMjd9.3ByiUzjlqXJy1HJ3S44W1Th0%23launched"
     },
     {
       "cell": "desktop-light-reduce",
@@ -1984,7 +1984,7 @@
       "name": "librarian answer links the store page it quotes",
       "ok": true,
       "soft": false,
-      "detail": "I think I found what you're looking for! In [“Refund policy”](http://127.0.0.1:37959/policies/refund-policy), it says: “Unridden bikes can be returned within 30 days of delivery for a full refund” [1]. Feel free to open the link for the full details."
+      "detail": "I think I found what you're looking for! In [“Refund policy”](http://127.0.0.1:40739/policies/refund-policy), it says: “Unridden bikes can be returned within 30 days of delivery for a full refund” [1]. Feel free to open the link for the full details."
     },
     {
       "cell": "desktop-light-reduce",
@@ -2016,7 +2016,7 @@
       "name": "B0 text visible",
       "ok": true,
       "soft": false,
-      "detail": "269 ms to first Builder message"
+      "detail": "263 ms to first Builder message"
     },
     {
       "cell": "mobile-light-full",
@@ -2024,7 +2024,7 @@
       "name": "first-run choices: samples (primary), upload, store URL",
       "ok": true,
       "soft": false,
-      "detail": "Use sample files · 30s demo | Upload my files | Enter your website | How does it avoid making things up?"
+      "detail": "Use sample files · 30s demo | Upload my files | Add website | How does it avoid making things up?"
     },
     {
       "cell": "mobile-light-full",
@@ -2080,7 +2080,7 @@
       "name": "BotChip becomes Lumen Help within 3 s",
       "ok": true,
       "soft": false,
-      "detail": "140 ms"
+      "detail": "96 ms"
     },
     {
       "cell": "mobile-light-full",
@@ -2472,7 +2472,7 @@
       "name": "redirect URL has trial= and bot=Lumen+Help",
       "ok": true,
       "soft": false,
-      "detail": "https://knowdrive.ai/signup?plan=knowbot&trial=tr_lv5gr25adl6hhdew&bot=Lumen+Help&email=smoke%40example.com&price=249&return=http%3A%2F%2F127.0.0.1%3A41389%2Fstudio%2F%3Ft%3Dtr_lv5gr25adl6hhdew%26launched%3D1%26k%3DeyJ0IjoidHJfbHY1Z3IyNWFkbDZoaGRldyIsImUiOjE3OTQ3NzEyNzU5NTB9.wk9kfqEgt_4TDw7qwaGViONI%23launched"
+      "detail": "https://knowdrive.ai/signup?plan=knowbot&trial=tr_caeclunxnk4v3zoc&bot=Lumen+Help&email=smoke%40example.com&price=249&return=http%3A%2F%2F127.0.0.1%3A35865%2Fstudio%2F%3Ft%3Dtr_caeclunxnk4v3zoc%26launched%3D1%26k%3DeyJ0IjoidHJfY2FlY2x1bnhuazR2M3pvYyIsImUiOjE3OTQ3NzM1NTU5NTl9.QjNzhno6CD1De3tZDa8FuhAs%23launched"
     },
     {
       "cell": "mobile-light-full",
@@ -2656,7 +2656,7 @@
       "name": "librarian answer links the store page it quotes",
       "ok": true,
       "soft": false,
-      "detail": "I think I found what you're looking for! In [“Refund policy”](http://127.0.0.1:44849/policies/refund-policy), it says: “Unridden bikes can be returned within 30 days of delivery for a full refund” [1]. Feel free to open the link for the full details."
+      "detail": "I think I found what you're looking for! In [“Refund policy”](http://127.0.0.1:41891/policies/refund-policy), it says: “Unridden bikes can be returned within 30 days of delivery for a full refund” [1]. Feel free to open the link for the full details."
     },
     {
       "cell": "mobile-light-full",
@@ -2696,7 +2696,7 @@
       "name": "first-run choices: samples (primary), upload, store URL",
       "ok": true,
       "soft": false,
-      "detail": "Use sample files · 30s demo | Upload my files | Enter your website | How does it avoid making things up?"
+      "detail": "Use sample files · 30s demo | Upload my files | Add website | How does it avoid making things up?"
     },
     {
       "cell": "mobile-dark-full",
@@ -2752,7 +2752,7 @@
       "name": "BotChip becomes Lumen Help within 3 s",
       "ok": true,
       "soft": false,
-      "detail": "98 ms"
+      "detail": "154 ms"
     },
     {
       "cell": "mobile-dark-full",
@@ -2856,7 +2856,7 @@
       "name": "first cited answer < 45 s from landing",
       "ok": true,
       "soft": false,
-      "detail": "6.7 s"
+      "detail": "6.8 s"
     },
     {
       "cell": "mobile-dark-full",
@@ -3144,7 +3144,7 @@
       "name": "redirect URL has trial= and bot=Lumen+Help",
       "ok": true,
       "soft": false,
-      "detail": "https://knowdrive.ai/signup?plan=knowbot&trial=tr_uixegis7tiomoccz&bot=Lumen+Help&email=smoke%40example.com&price=249&return=http%3A%2F%2F127.0.0.1%3A43031%2Fstudio%2F%3Ft%3Dtr_uixegis7tiomoccz%26launched%3D1%26k%3DeyJ0IjoidHJfdWl4ZWdpczd0aW9tb2NjeiIsImUiOjE3OTQ3NzEzMTc1MTZ9.NYaSvHJ_T6hrJhuPGPP8wadM%23launched"
+      "detail": "https://knowdrive.ai/signup?plan=knowbot&trial=tr_x3cdm4ltsrnpt3ms&bot=Lumen+Help&email=smoke%40example.com&price=249&return=http%3A%2F%2F127.0.0.1%3A34743%2Fstudio%2F%3Ft%3Dtr_x3cdm4ltsrnpt3ms%26launched%3D1%26k%3DeyJ0IjoidHJfeDNjZG00bHRzcm5wdDNtcyIsImUiOjE3OTQ3NzM1OTc3NzN9.B6Dp4xi-kkZURaUTNSUwfev0%23launched"
     },
     {
       "cell": "mobile-dark-full",
@@ -3328,7 +3328,7 @@
       "name": "librarian answer links the store page it quotes",
       "ok": true,
       "soft": false,
-      "detail": "I think I found what you're looking for! In [“Refund policy”](http://127.0.0.1:44147/policies/refund-policy), it says: “Unridden bikes can be returned within 30 days of delivery for a full refund” [1]. Feel free to open the link for the full details."
+      "detail": "I think I found what you're looking for! In [“Refund policy”](http://127.0.0.1:40931/policies/refund-policy), it says: “Unridden bikes can be returned within 30 days of delivery for a full refund” [1]. Feel free to open the link for the full details."
     },
     {
       "cell": "mobile-dark-full",

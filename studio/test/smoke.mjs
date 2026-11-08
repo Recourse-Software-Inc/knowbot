@@ -229,7 +229,7 @@ async function journey(browser, dev, cell) {
   const logText = await page.innerText('#st-log').catch(() => '');
   check('01-landing', 'B0 text visible', /Start with your files or ours\?/.test(logText), { detail: `${firstMsgMs} ms to first Builder message` });
   const chipTexts = await page.locator('#st-log .st-chips:not([hidden]) .st-chip').allInnerTexts();
-  check('01-landing', 'first-run choices: samples (primary), upload, store URL', chipTexts.length >= 3 && /Use sample files/.test(chipTexts[0]) && /Upload my files/.test(chipTexts[1]) && /Enter (a Store URL|your website)/.test(chipTexts[2]) &&
+  check('01-landing', 'first-run choices: samples (primary), upload, store URL', chipTexts.length >= 3 && /Use sample files/.test(chipTexts[0]) && /Upload my files/.test(chipTexts[1]) && /Enter (a Store URL|your website)|Add website/.test(chipTexts[2]) &&
     await page.locator('#st-log .st-chip-primary').first().innerText().then((t) => /Use sample files/.test(t)).catch(() => false), { detail: chipTexts.join(' | ') });
   await waitState(page, (s) => s.trial.status === 'ready', { timeout: 8000 });
   check('01-landing', 'trial created (201)', trialStatus === 201, { detail: `status ${trialStatus}` });
@@ -709,7 +709,7 @@ async function storeJourney(browser, dev, cell) {
     await page.goto(dev.studioUrl, { waitUntil: 'domcontentloaded' });
     await waitState(page, (s) => s.trial.status === 'ready', { timeout: 10000 });
     await page.waitForTimeout(500);
-    check("18-store", "Builder offers the website import", await clickBuilderChip(page, cell, /Enter (a Store URL|your website)/));
+    check("18-store", "Builder offers the website import", await clickBuilderChip(page, cell, /Enter (a Store URL|your website)|Add website/));
     const input = page.locator('.st-si input[placeholder="yourstore.com"]').last();
     const opened = await input.waitFor({ state: 'visible', timeout: 6000 }).then(() => true).catch(() => false);
     check('18-store', 'inline URL field (placeholder yourstore.com) + ownership checkbox', opened && await page.locator('.st-si .st-si-check input[type="checkbox"]').last().isVisible());

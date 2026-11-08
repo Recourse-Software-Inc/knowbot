@@ -3413,6 +3413,7 @@ async function startNewBot() {
   logEl.innerHTML = ''; messages.length = 0;
   renderIdentityAll();
   renderB0();
+  window.__kbLandingShow?.();   // the first view again (landing.js), as for a first visit
   const r = await createTrialWithRetry();
   resolveTrial();
   await modulesP;
@@ -3621,6 +3622,22 @@ function ghostPreview() {
     h('span', { class: 'st-ghostpeek-go' }, 'See your bot', h('span', { html: icon('chevronRight', 14) })));
 }
 
+/** Landing hand-off: { text } is the visitor's first Builder message (exactly as if typed in the composer);
+ * { chip } presses that B0 chip (or runs its action when the chip is gone). */
+function landingAction(a) {
+  if (!a) return;
+  if (!messages.length && !isLive()) renderB0();
+  if (a.text) { userSays(String(a.text).slice(0, 2000)); return; }
+  const id = a.chip;
+  const btn = id && $(`.st-msg-a .st-chip[data-chip="${id}"]`, logEl);
+  const usable = btn && !btn.closest('.st-chips')?.hidden && !btn.closest('.is-stale');
+  // the file picker only opens inside a click: after a late hydration the Upload chip is focused instead
+  if (id === 'upload_files' && navigator.userActivation && !navigator.userActivation.isActive) { if (usable) { btn.focus(); return; } }
+  if (usable) { btn.click(); return; }
+  if (id === 'use_samples') { addUserMessage('Use sample files · 30s demo'); dispatchAction({ type: 'attach_samples', set: 'lumen-bikes' }, { fromClick: true }); }
+  else if (id === 'upload_files') { addUserMessage('Upload my files'); dispatchAction({ type: 'request_upload' }, { fromClick: true }); }
+}
+
 function explainCanonical() {
   addUserMessage("What's a canonical bot?");
   localSay(`It only answers from the files you give it. It quotes them word for word with [n] citations, and if the answer isn't there it says exactly: *"${NOT_IN_DATA}"* No guessing, ever.`, { reply: true, chips: [
@@ -3775,6 +3792,9 @@ async function boot() {
   if (launchedReturn && params.get('launched') === '1' && isMobile()) setTimeout(() => showPeek(`Activating ${botName()}…`), 600);
   savedOwnFiles = !!getState().milestones.ownFile;
   if (!hadTrial && !params.get('t')) { renderB0(); renderHero(); }
+  // the first view (landing.js) hands its typed text or choice over here; one made before this point waits in __kbLanding
+  ctx.landing = landingAction;
+  if (window.__kbLanding) { const a = window.__kbLanding; window.__kbLanding = null; landingAction(a); }
   // 5. owner modules mount after first paint
   mountModules();
   // 4. trial

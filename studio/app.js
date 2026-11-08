@@ -3782,7 +3782,7 @@ on('file:stage', (d) => {
   }
   if (f.stalledFor >= 45000 && !stalled.has(f.localId)) {
     stalled.add(f.localId);
-    const stage = { uploaded: 'uploading', extracted: 'chunking', chunked: 'atomizing', atomized: 'vectorizing', vectorizing: 'vectorizing' }[f.phase] || 'extracting';
+    const stage = { uploaded: 'uploading', extracted: 'chunking', chunked: 'atomizing', atomized: 'encoding your knowledge', vectorizing: 'encoding your knowledge' }[f.phase] || 'extracting';
     if (!narrationQuiet()) localSay(`**${f.name}** is still ${stage === 'uploading' ? 'extracting' : stage}. Big PDFs and audio can take a few minutes. You can test with the files that are ready.`, { key: `stall:${f.name}`, chips: [
       { id: 'ask', label: 'Ask a question', run: focusBotComposer, local: true },
       { id: 'add_more', label: 'Add more files', action: { type: 'request_upload' }, local: true },

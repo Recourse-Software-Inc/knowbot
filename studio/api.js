@@ -348,6 +348,8 @@ export async function importStore(url, { owner = true, onEvent, signal } = {}) {
   }
   return done;
 }
+/** DELETE the whole trial ("Start over"): its files, spec and logged questions. */
+export async function deleteTrial() { return request('DELETE', trialPath('')); }
 
 /** DELETE /samples. */
 export async function removeSamples() { return request('DELETE', trialPath('/samples')); }

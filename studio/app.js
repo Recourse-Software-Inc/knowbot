@@ -23,10 +23,10 @@
 // Siblings are imported WITHOUT a cache stamp so every module (C, D, E included) shares one store instance.
 // The lazily mounted owner modules carry the stamp (?v=V).
 
-import * as store from './store.js';
-import * as api from './api.js';
-import * as motion from './motion.js';
-import * as icons from './icons.js';
+import * as store from './store.js?v=980286d';
+import * as api from './api.js?v=980286d';
+import * as motion from './motion.js?v=980286d';
+import * as icons from './icons.js?v=980286d';
 
 const V = '1';
 const { getState, setState, on, emit, mark } = store;

@@ -184,6 +184,8 @@ function renderHeader() {
   const livePill = h('span', { id: 'st-livepill', class: 'st-pill st-pill-live', role: 'status', hidden: true }, h('i', { 'aria-hidden': 'true' }), 'Live');
   const dash = h('a', { id: 'st-dash', class: 'st-dash', href: 'https://knowdrive.ai/', target: '_blank', rel: 'noopener', hidden: true },
     h('span', null, 'Dashboard'), h('span', { class: 'st-dash-ico', 'aria-hidden': 'true', html: icon('external', 13) }), h('span', { class: 'st-sr' }, ' (opens in a new tab)'));
+  const restart = h('button', { type: 'button', id: 'st-restart', class: 'st-restart st-hide-mobile', 'aria-haspopup': 'dialog', onclick: () => confirmStartOver() },
+    h('span', { html: icon('refresh', 14), 'aria-hidden': 'true' }), h('span', null, 'Start over'));
   const theme = h('button', { type: 'button', id: 'st-theme', class: 'st-iconbtn st-hide-mobile', onclick: toggleTheme });
   const mot = h('button', { type: 'button', id: 'st-motion', class: 'st-iconbtn st-hide-mobile', onclick: toggleMotion });
   const dbg = DEBUG ? h('span', { id: 'st-debug', class: 'st-pill st-pill-debug' }, 'debug') : null;
@@ -192,7 +194,7 @@ function renderHeader() {
   el.append(
     h('h1', { class: 'st-sr' }, 'KnowBot Studio: build a bot that answers only from your files'),
     h('div', { class: 'st-header-left' }, brand, h('span', { class: 'st-hsep', 'aria-hidden': 'true' }), botchip, botchipDesc),
-    h('div', { class: 'st-header-right' }, dbg, net, trial, kbd, kbdDesc, livePill, dash, priceWrap, theme, mot, more),
+    h('div', { class: 'st-header-right' }, dbg, net, trial, kbd, kbdDesc, livePill, dash, priceWrap, restart, theme, mot, more),
   );
   updateIdentity();
   updatePrice();
@@ -1913,6 +1915,7 @@ function openMoreMenu(anchor) {
     item(dark ? 'sun' : 'moon', dark ? 'Light theme' : 'Dark theme', toggleTheme),
     item('motion', motion.reduced() ? 'Full motion' : 'Reduce motion', toggleMotion),
     item('command', 'Command palette', () => openPalette()),
+    t.converted ? null : item('refresh', 'Start over', () => confirmStartOver()),
     t.expiresAt ? h('li', { role: 'none', class: 'st-menu-note' }, icon('checkCircle', 14), ` Saved until ${new Date(t.expiresAt).toLocaleDateString()}`) : null);
   openMenu(anchor, list);
 }
@@ -2196,6 +2199,7 @@ function paletteCommands() {
     { id: 'launch', label: `Launch · ${priceText()}`, ico: 'rocket', run: () => launchOpen('palette') },
     { id: 'channels', label: 'Channels & API (SMS, phone, WhatsApp, email, voice)', ico: 'phone', run: () => openGoLive('channels') },
     { id: 'api', label: 'Developer API · OpenAI-compatible', ico: 'code', run: () => openGoLive('developers') },
+    ...(getState().trial.converted ? [] : [{ id: 'restart', label: 'Start over (delete this bot and its files)', ico: 'refresh', run: () => confirmStartOver() }]),
     { id: 'theme', label: dark ? 'Light theme' : 'Dark theme', ico: dark ? 'sun' : 'moon', run: toggleTheme },
     { id: 'motion', label: motion.reduced() ? 'Full motion' : 'Reduce motion', ico: 'motion', run: toggleMotion },
   ];
@@ -3354,6 +3358,48 @@ function onExpired() {
   if (messages.length) { logEl.innerHTML = ''; messages.length = 0; }
   updateTrialPill();
   localSay('', { reply: true, card: { type: 'expired', data: {} }, chips: [{ id: 'new_bot', label: 'Start a new bot', kind: 'primary', run: startNewBot, local: true }] });
+}
+
+// ------------------------------------------------------------------ start over (confirmed, destructive)
+
+let startOverEl = null;
+function confirmStartOver() {
+  if (startOverEl) return;
+  const t = getState().trial;
+  if (t.converted) { toast({ kind: 'info', text: 'This bot is live. Manage it from your KnowDrive dashboard.' }); return; }
+  ensureOverlay();
+  const files = Object.values(getState().files || {}).filter((f) => f && !f.sample).length;
+  const titleId = 'st-restart-title', descId = 'st-restart-desc';
+  const err = h('p', { class: 'st-restart-err', role: 'alert', hidden: true });
+  const cancel = h('button', { type: 'button', class: 'st-btn st-btn-ghost', onclick: () => close() }, 'Cancel');
+  const go = h('button', { type: 'button', class: 'st-btn st-btn-danger', onclick: () => run() }, h('span', { html: icon('refresh', 15), 'aria-hidden': 'true' }), h('span', { class: 'st-btn-label' }, 'Delete and start over'));
+  const panel = h('div', { class: 'st-confirm-panel' },
+    h('h2', { id: titleId }, 'Start over from scratch?'),
+    h('p', { id: descId }, `This permanently deletes ${botName()}, ${files ? `your ${files} uploaded file${files === 1 ? '' : 's'}, ` : ''}its settings, this conversation and the questions it has logged. Any link you saved to this bot will stop working. This can't be undone.`),
+    err,
+    h('div', { class: 'st-confirm-actions' }, cancel, go));
+  startOverEl = h('div', { class: 'st-confirm', role: 'alertdialog', 'aria-modal': 'true', 'aria-labelledby': titleId, 'aria-describedby': descId },
+    h('div', { class: 'st-scrim', onclick: () => close() }), panel);
+  slots.overlay.append(startOverEl);
+  motion.animate(panel, [{ transform: 'translateY(8px) scale(.98)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: motion.DUR[2], easing: 'out' });
+  const rec = openDialog(startOverEl, { onClose: () => { startOverEl && startOverEl.remove(); startOverEl = null; }, initialFocus: () => cancel });
+  function close() { closeDialog(rec); }
+  async function run() {
+    go.disabled = true; cancel.disabled = true; go.querySelector('.st-btn-label').textContent = 'Deleting…'; err.hidden = true;
+    try { await api.deleteTrial(); }
+    catch (e) {
+      if (!(e && (e.status === 404 || e.status === 401))) {
+        err.textContent = `Couldn't delete it just now (${(e && e.message) || 'network error'}). Nothing was changed. Try again?`;
+        err.hidden = false; go.disabled = false; cancel.disabled = false; go.querySelector('.st-btn-label').textContent = 'Delete and start over';
+        return;
+      }
+    }
+    rec.invoker = null; // focus goes to the fresh Builder, not the old header button
+    close();
+    announce('Deleted. Starting a new bot.');
+    await startNewBot();
+    toast({ kind: 'info', text: 'Started over. Everything from the old bot was deleted.' });
+  }
 }
 
 async function startNewBot() {

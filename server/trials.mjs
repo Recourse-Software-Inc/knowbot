@@ -955,8 +955,10 @@ export function createStudio(o = {}) {
     if (!T) { T = newTrialState(id, null); trials.set(id, T); }
     return T;
   }
+  const deletedTrials = new Set(); // "Start over": a deleted trial's token stops working at once (files are gone too)
   async function auth(req, id) {
     if (!TRIAL_ID_RE.test(id)) fail(404, 'not_found', 'No such trial.');
+    if (deletedTrials.has(id)) fail(404, 'not_found', 'This bot was deleted.');
     const data = verifyToken(bearer(req), id);
     const T = trialFor(id);
     T.expiresAt = Number(data.e);
@@ -993,6 +995,7 @@ export function createStudio(o = {}) {
       checkoutStartedAt: T.checkoutStartedAt, flags: T.flags, answers: { grounded: T.grounded, refusals: T.refusals }, proofDone: T.proofDone, savedAt: new Date(now()).toISOString() }, null, 2);
   }
   async function flushSpec(T) {
+    if (T.deleted) return;
     clearTimeout(T.specTimer); T.specTimer = null; T.specDirty = false;
     const tags = T.converted ? ['knowbot', 'kind:trial-spec'] : [...trialTags(T), 'kind:trial-spec'];
     try { await ingest({ storePath: specPath(T.id), tags, mime: 'application/json', bytes: Buffer.from(specDoc(T)) }); }
@@ -2856,7 +2859,26 @@ Allowed patch fields: name (≤40), org (≤60), purpose (≤200), audience (cus
         const r = applyPatch(T, await readBody(req), 'user');
         return sendJson(res, 200, { spec: publicSpec(T), version: T.spec.version, diff: r.diff });
       }
-      allow('GET', 'PATCH');
+      if (m === 'DELETE') {
+        // "Start over": delete this trial's own files (uploads, spec, logged questions). Shared sample copies are never
+        // touched. A live (converted) bot is managed from the dashboard instead.
+        if (T.converted) fail(409, 'converted', 'This bot is live. Manage it from your KnowDrive dashboard.');
+        T.deleted = true;
+        clearTimeout(T.specTimer); T.specTimer = null; T.specDirty = false;
+        if (T.poller) { clearTimeout(T.poller); T.poller = null; }
+        for (const c of [...T.clients]) { try { c.res.end(); } catch { /* gone */ } }
+        const rows = await listRows({ tags_all: `trial:${T.id}` });
+        let deleted = 0;
+        for (const r of rows) {
+          const tags = r.tags || [];
+          if (!tags.includes(`trial:${T.id}`) || !tags.includes('kind:trial') || tags.includes('kind:trial-sample')) continue; // fail closed
+          try { await deleteRow(r.id); deleted++; } catch (e) { log(`[studio] start over ${T.id}: delete ${r.id}: ${e.message}`); }
+        }
+        deletedTrials.add(T.id);
+        trials.delete(T.id);
+        return sendJson(res, 200, { deleted });
+      }
+      allow('GET', 'PATCH', 'DELETE');
     }
 
     if (sub === 'files' && !fid) {

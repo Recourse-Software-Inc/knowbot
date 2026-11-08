@@ -331,6 +331,9 @@ export async function fileAtoms(fileId, { limit = 12, around, span = 1 } = {}) {
 /** POST /samples -> {files, usage}. */
 export async function attachSamples(set = 'lumen-bikes') { return request('POST', trialPath('/samples'), { body: { set } }); }
 
+/** DELETE the whole trial ("Start over"): its files, spec and logged questions. */
+export async function deleteTrial() { return request('DELETE', trialPath('')); }
+
 /** DELETE /samples. */
 export async function removeSamples() { return request('DELETE', trialPath('/samples')); }
 

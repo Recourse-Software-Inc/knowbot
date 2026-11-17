@@ -360,7 +360,7 @@ button { font: inherit; color: inherit; }
     status.textContent = '';
     try {
       const [{ openVoiceMode }] = await Promise.all([
-        import(new URL('../lib/voice-mode.js', SRC).href),
+        import(new URL('../lib/voice-mode.js?v=735e7da', SRC).href),
         // a fresh key when this one is about to run out (it lives a few hours)
         !ownerKey && Date.parse(site.keyExpiresAt || '') < Date.now() + 120000 ? loadSite().then((x) => { site = { ...site, ...x }; }).catch(() => {}) : null,
       ]);
@@ -465,7 +465,7 @@ button { font: inherit; color: inherit; }
     try { if (document.readyState === 'complete') idle(); else window.addEventListener('load', idle, { once: true }); } catch { /* same */ }
   }
   /* sales:end */
-  try { if (!HOSTED && SRC && !PRIVACY) loadSales(new URL('./sale.js', SRC).href, BOT, API); } catch { /* sale tracking never breaks the page */ }
+  try { if (!HOSTED && SRC && !PRIVACY) loadSales(new URL('./sale.js?v=735e7da', SRC).href, BOT, API); } catch { /* sale tracking never breaks the page */ }
   /** An outgoing <a> with the answer's tags; its click and middle-click are reported without holding the navigation. */
   function tracked(a, kind, track) {
     const url = a && a.getAttribute('href');

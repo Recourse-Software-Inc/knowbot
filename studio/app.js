@@ -24,17 +24,17 @@
 // module (C, D, E included) is loaded from one address and shares one store instance. The lazily mounted owner modules
 // are named as whole relative-path literals (mountModules) so the stamper sees them.
 
-import * as store from './store.js';
-import * as api from './api.js';
-import * as motion from './motion.js';
-import * as icons from './icons.js';
-import { normalizeSurfaces, surfacesText, planTotals, money, featureLabel, SURFACE_TOOLS, PRICE_MONTH, PRICE_YEAR } from './surfaces.js';
-import { mountShapes } from './shapes.js';
-import { mountBuilderPane } from './builderpane.js';
-import { siteSettings } from './sitebrand.js';
-import { mountWidget, mountStatusCard, gaugeProps } from './kdw.js';
-import { openLeads, initStatsRoute } from './leads.js';
-import { mountFtue } from './ftue.js';
+import * as store from './store.js?v=424e3fe';
+import * as api from './api.js?v=424e3fe';
+import * as motion from './motion.js?v=424e3fe';
+import * as icons from './icons.js?v=424e3fe';
+import { normalizeSurfaces, surfacesText, planTotals, money, featureLabel, SURFACE_TOOLS, PRICE_MONTH, PRICE_YEAR } from './surfaces.js?v=424e3fe';
+import { mountShapes } from './shapes.js?v=424e3fe';
+import { mountBuilderPane } from './builderpane.js?v=424e3fe';
+import { siteSettings } from './sitebrand.js?v=424e3fe';
+import { mountWidget, mountStatusCard, gaugeProps } from './kdw.js?v=424e3fe';
+import { openLeads, initStatsRoute } from './leads.js?v=424e3fe';
+import { mountFtue } from './ftue.js?v=424e3fe';
 
 const { getState, setState, on, emit, mark } = store;
 const { icon, fileIcon } = icons;
@@ -766,7 +766,7 @@ function initFtue(fresh) {
       openStats: () => openLeads(),
       openSetup: () => openSetup({}),
       saveSurfaces: (list) => updateSpec({ surfaces: normalizeSurfaces(list) }, { by: 'user', source: 'landing', quiet: true }),
-      websiteLine: () => import('./golive.js').then((m) => m.websiteLine(ctx)),
+      websiteLine: () => import('./golive.js?v=424e3fe').then((m) => m.websiteLine(ctx)),
       isLive,
       onDismiss: () => toast({ kind: 'info', text: 'Guide hidden. Bring it back any time from ⋯ → Show the guide.' }),
       // the guide is done or dismissed: the Builder's held "Keep this bot" offer comes now
@@ -5485,7 +5485,7 @@ function mountModules() {
   // perf (r3): the three modules download in parallel but mount one per frame (each mount builds a lot of DOM; two in
   // one frame made a long animation frame on a throttled CPU)
   const go = async () => {
-    const list = [['ingest', './ingest.js'], ['samplebot', './samplebot.js'], ['checkout', './checkout.js']];
+    const list = [['ingest', './ingest.js?v=424e3fe'], ['samplebot', './samplebot.js?v=424e3fe'], ['checkout', './checkout.js?v=424e3fe']];
     const ps = list.map(([, file]) => import(file).catch((err) => err));
     for (let i = 0; i < list.length; i++) {
       const [name] = list[i];

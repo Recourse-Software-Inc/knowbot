@@ -21,10 +21,10 @@
 // Data: GET /api/studio/trials/:id/leads[.csv], /attribution, /clicks.csv, /sales.csv (server/leads.mjs), /history[.csv] (server/questions.mjs questionHistory)
 // and /insights. Days and times are the viewer's own (the browser's UTC offset is sent as `tz`).
 // Self-contained (styles in leads.css, loaded on first open). Customer-facing copy never names a provider.
-import * as api from './api.js';
-import { getState } from './store.js';
-import { icon } from './icons.js';
-import { crmSection } from './crm.js';
+import * as api from './api.js?v=424e3fe';
+import { getState } from './store.js?v=424e3fe';
+import { icon } from './icons.js?v=424e3fe';
+import { crmSection } from './crm.js?v=424e3fe';
 
 const CHANNELS = [
   ['web', 'Website chat'], ['site', 'Homepage search'], ['sms', 'SMS'], ['whatsapp', 'WhatsApp'], ['email', 'Email'],
@@ -59,7 +59,7 @@ const ico = (name, size = 14) => h('span', { class: 'kb-stats-ico', 'aria-hidden
 let cssReady = null;
 function ensureCss() {
   if (cssReady) return cssReady;
-  const href = new URL('./leads.css', import.meta.url);
+  const href = new URL('./leads.css?v=424e3fe', import.meta.url);
   href.search = new URL(import.meta.url).search;
   if (document.querySelector('link[data-kb-leads]')) return (cssReady = Promise.resolve());
   cssReady = new Promise((resolve) => {

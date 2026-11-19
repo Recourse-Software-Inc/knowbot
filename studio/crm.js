@@ -10,8 +10,8 @@
 // Data: /api/studio/trials/:id/crm… (server/crm/routes.mjs). Secrets never come back from the server: a webhook's
 // signing secret and a Zapier key are shown once, right after they are made. Names of the services are shown as text
 // (they are integrations the owner picks); nothing here names what KnowBot itself runs on.
-import * as api from './api.js';
-import { icon } from './icons.js';
+import * as api from './api.js?v=a4b3b26';
+import { icon } from './icons.js?v=a4b3b26';
 
 function h(tag, attrs, ...kids) {
   const el = document.createElement(tag);

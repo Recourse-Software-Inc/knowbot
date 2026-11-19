@@ -24,7 +24,7 @@
   <script type="module">
     // Short proof links (/p/<id>) live on this site so a texted answer never shows the API's address; the proof
     // itself is served by the KnowBot API, so forward there.
-    import { hostedApi } from '/lib/site-config.js';
+    import { hostedApi } from '/lib/site-config.js?v=d066022';
     const m = /^\/p\/([A-Za-z0-9_-]{4,64})\/?$/.exec(location.pathname);
     const api = hostedApi();
     if (m && api) {
